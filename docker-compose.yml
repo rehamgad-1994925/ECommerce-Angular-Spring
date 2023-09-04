@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  db:
+    image: "mysql:latest"
+    container_name: ecommerce-mysql
+    volumes:
+      - drive-storage:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=ecommerce
+      - MYSQL_ROOT_PSSWORD=Akamihe2004!
+    
+  backend:
+    build:
+       dockerfile: ./backend
+
+    container_name: ecommerce-app
+    environment:
+       - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/ecommerce  
+       - SPRING_DATASOURCE_USERNAME=root
+       - SPRING_DATASOURCE_PASSWORD=Akamihe2004!  
+
+    ports:
+      - "8080:8080"
+    links:
+      - db
+
+  frontend:
+    build: 
+      dockerfile: ./frontend
+    container_name: ecommerence-web
+    ports:
+      - "4200:80"
+    links:
+      - backend
+volumes:
+  drive-storage:
+
